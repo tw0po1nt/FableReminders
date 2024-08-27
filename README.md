@@ -1,6 +1,5 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Fsharp_logo.png" alt="fsharp-logo" width="150"/>
 <img src="https://fable.io/static/img/logo_ukraine.png" alt="fable-logo" width="150"/>
-<img src="https://api.nuget.org/v3-flatcontainer/fable.elmish/4.2.0/icon" alt="fable-elmish-logo" width="150"/>
 
 <br />
 
