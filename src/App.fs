@@ -33,6 +33,7 @@ type Msg =
   | SetNewReminderList of NewReminderList
   | CommitNewReminderList
   | CommitNewReminder
+  | ToggleReminderIsCompleted of ReminderList * Reminder
 
 let init () =
   { Lists = [
@@ -126,7 +127,29 @@ let update msg state =
       )
     )
     |> Option.defaultValue state
+  | ToggleReminderIsCompleted (list, reminder) ->
+    let nextReminder =
+      { reminder with IsCompleted = not reminder.IsCompleted }
 
+    let nextReminders = 
+      list.Reminders
+      |> List.map (fun r -> if r.Id = nextReminder.Id then nextReminder else r)
+
+    let nextList = { list with Reminders = nextReminders }
+
+    let nextLists =
+      state.Lists
+      |> List.map (fun l -> if l.Id = list.Id then nextList else l)
+
+    let nextSelectedList =
+      state.SelectedListState
+      |> Option.map (fun sl ->
+        { sl with List = nextList }
+      )
+
+    { state with 
+        Lists = nextLists
+        SelectedListState = nextSelectedList }
 
 // Render
 
@@ -256,13 +279,14 @@ let private sidebar state dispatch =
   ]
 
 // Selected list
-let private selectedListListItem (list : ReminderList) reminder =
+let private selectedListListItem (list : ReminderList) reminder onClick =
   Html.div [
     prop.className [ "flex"; "flex-row"; "items-center"; "p-2" ]
     prop.children [
       Html.div [
         prop.className [ "flex"; "flex-row"; "justify-center"; "items-center"; "border"; "w-5"; "h-5"; "rounded-full"; "ml-4"; "mr-2"; "cursor-pointer" ]
         prop.style [ style.borderColor (if reminder.IsCompleted then list.Color else "rgb(113,113,122)" ) ]
+        prop.onClick (ignore >> onClick)
         prop.children [
           if reminder.IsCompleted
           then
@@ -332,7 +356,10 @@ let private selectedList (state : SelectedListState) dispatch =
         prop.className "w-full"
         prop.children [
           for reminder in state.List.Reminders ->
-            selectedListListItem state.List reminder
+            selectedListListItem 
+              state.List 
+              reminder
+              (fun () -> dispatch (ToggleReminderIsCompleted (state.List, reminder)))
             
           yield 
             state.NewReminder
