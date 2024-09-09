@@ -3,6 +3,8 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models.fs" />
+    <Compile Include="Features/ReminderList.fs" />
     <Compile Include="Colors.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Program.fs" />
