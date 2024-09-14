@@ -1,61 +1,11 @@
 namespace Features
 
+open Features.ReminderList
 open Feliz
 open Models
 
 [<RequireQualifiedAccess>]
-module ReminderList =
-  type State =
-    { List : ReminderList
-      NewReminder : string option }
-
-  type Msg =
-    | SetNewReminder of string
-    | ToggleReminderIsCompleted of Reminder
-    | CommitNewReminder
-
-  let init list =
-    { List = list
-      NewReminder = None }
-
-  let update msg state =
-    match msg with
-    | SetNewReminder reminder ->
-      { state with NewReminder = Some reminder }
-    | ToggleReminderIsCompleted reminder ->
-      let nextReminder =
-        { reminder with IsCompleted = not reminder.IsCompleted }
-      let nextReminders = 
-        state.List.Reminders
-        |> List.map (fun r -> if r.Id = nextReminder.Id then nextReminder else r)
-      let nextList = { state.List with Reminders = nextReminders }
-      { state with List = nextList }
-    | CommitNewReminder ->
-      state.NewReminder
-      |> Option.map(fun nr ->
-        let nextId =
-          match state.List.Reminders with
-          | [ ] -> 1
-          | elems ->
-            elems
-            |> List.maxBy (fun l -> l.Id)
-            |> fun l -> l.Id + 1
-
-        let newReminder =
-          { Id = nextId
-            Task = nr
-            IsCompleted = false }
-
-        let nextReminders = List.append state.List.Reminders [newReminder]
-        let nextList = { state.List with Reminders = nextReminders }
-
-        { state with 
-            List = nextList
-            NewReminder = None }
-      )
-      |> Option.defaultValue state
-
-  // Render
+module ReminderListView =
   let private reminderListItem list reminder onClick =
     Html.div [
       prop.className [ "flex"; "flex-row"; "items-center"; "p-2" ]
@@ -98,12 +48,12 @@ module ReminderList =
           prop.className [ "grow"; "bg-zinc-800"; "text-white"; "focus:ring-0"; "focus:ring-offset-0" ]
           prop.type' "text"
           prop.valueOrDefault newReminder
-          prop.onChange (fun newValue -> onNameChange(newValue))
+          prop.onChange onNameChange
           prop.onKeyUp (fun e ->
             if e.key = "Enter"
             then onCommit()
           )
-          prop.onBlur (fun _ -> onCommit())
+          prop.onBlur (ignore >> onCommit)
         ]
       ]
     ]
@@ -166,6 +116,3 @@ module ReminderList =
         ]
       ]
     ]
-      
-
-  

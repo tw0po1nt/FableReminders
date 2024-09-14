@@ -4,9 +4,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Models.fs" />
-    <Compile Include="Features/ReminderList.fs" />
     <Compile Include="Colors.fs" />
-    <Compile Include="App.fs" />
+    <Compile Include="Features/ReminderList/ReminderListTypes.fs" />
+    <Compile Include="Features/ReminderList/ReminderList.fs" />
+    <Compile Include="Features/ReminderList/ReminderListView.fs" />
+    <Compile Include="Features/ReminderList/ReminderListPreview.fs" />
+    <Compile Include="Features/App/AppTypes.fs" />
+    <Compile Include="Features/App/AppPlusReminderList.fs" />
+    <Compile Include="Features/App/App.fs" />
+    <Compile Include="Features/App/AppView.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

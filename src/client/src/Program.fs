@@ -2,7 +2,8 @@
 
 open Elmish
 open Elmish.React
+open Features
 
-Program.mkSimple App.init App.update App.render
+Program.mkSimple AppFeature.init AppFeature.update AppView.render
 |> Program.withReactSynchronous "app"
 |> Program.run
