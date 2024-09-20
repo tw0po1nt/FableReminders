@@ -1,9 +1,9 @@
 ﻿module Program
 
 open Elmish
-open Elmish.React
+open Lit.Elmish
 open Features
 
 Program.mkProgram AppFeature.init AppFeature.update AppView.render
-|> Program.withReactSynchronous "app"
+|> Program.withLit "app"
 |> Program.run

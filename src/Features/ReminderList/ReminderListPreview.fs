@@ -1,7 +1,7 @@
 module ReminderListPreview
 
 open Elmish
-open Elmish.React
+open Lit.Elmish
 open Features
 
 let private previewUpdate msg state = 
@@ -9,6 +9,6 @@ let private previewUpdate msg state =
   st, cmd
 
 Program.mkProgram (ReminderListFeature.init None) previewUpdate ReminderListView.render
-|> Program.withReactSynchronous "app"
+|> Program.withLit "app"
 |> Program.run
 
