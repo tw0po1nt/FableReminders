@@ -1,2 +1,8 @@
-﻿// For more information see https://aka.ms/fsharp-console-apps
-printfn "Hello from F#"
+﻿module Program
+
+open Elmish
+open Elmish.React
+
+Program.mkSimple App.init App.update App.render
+|> Program.withReactSynchronous "app"
+|> Program.run
